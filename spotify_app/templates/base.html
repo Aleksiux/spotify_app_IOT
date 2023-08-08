@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+      {% load static %}
+    {% block title %}<title>Spotify IOT</title>{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://demo.plantpot.works/assets/css/normalize.css">
+    <link rel="stylesheet" href="https://use.typekit.net/opg3wle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <!-- Add additional CSS in static file -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js">
+</script>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css"/>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+        <div class="spotify_image" align="center">
+<img class="spotify_icon" rel="stylesheet" src="{% static 'images/Spotify_Logo_RGB_Green.png' %}">
+</div>
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'info' %}success{% elif message.tags == 'warning' %}warning{% endif %} fade in text-center"
+         role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+<ul class="nav justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link active" href="">Something1</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="">Something2</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="">Something3</a>
+  </li>
+</ul>
+<div class="">{% block content %}{% endblock %}</div>
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+    <form method="POST" action="{% url 'search' %}">
+<div class="row height d-flex justify-content-center">
+        {% csrf_token %}
+    <div class="col-md-4">
+                <div class="form">
+                  <i class="fa fa-search"></i>
+                  <input name="input_search" id="searchInput" type="text" class="form-control form-input" placeholder="Search anything...">
+                   <button type="submit" onclick="submitForm()" class="btn"><i class="fa fa-play"></i></button>
+                </div>
+              </div>
+
+            </div>
+            </form>
+
+
+
+
+{% endblock %}
