@@ -11,8 +11,17 @@
             <th>Image</th>
         </tr>
         {% for result in search_results %}
+
+
         <tr>
-            <td style="color:#FFFFFF">{{result.name}}</td>
+            <td style="color:#FFFFFF">
+                <form action="{% url 'play_selected_song' %}" method="post">
+                        {% csrf_token %}
+                <input type="hidden" name="selected_song" value="{{result.uri}}">
+                        <input class="clear" type="submit" value="{{result.name}}">
+
+                </form>
+            </td>
             <td>
                 {% for image in result.album.images %}
                     {% if image.height == 300 and image.width == 300 %}

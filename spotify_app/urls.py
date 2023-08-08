@@ -5,8 +5,10 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+                  path('', RedirectView.as_view(url='index', permanent=False)),
                   path('index', views.index, name='index'),
                   path('search', views.search, name='search'),
-                  path('', RedirectView.as_view(url='index', permanent=False)),
+                  path('play_selected_song', views.play_selected_song, name='play_selected_song'),
+
               ] + (static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) +
                    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

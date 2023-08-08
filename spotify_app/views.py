@@ -15,6 +15,13 @@ def search(request):
         context = {
             'search_results': search_results['tracks']['items']
         }
-        for i in context['search_results']:
-            print(i['name'])
         return render(request, 'search_result.html', context=context)
+
+
+def play_selected_song(request):
+    if request.method == "POST":
+        selected_song = request.POST.get('selected_song')
+        spotify = spotify_main.SaveSongs()
+        spotify.call_refresh()
+        spotify.play_song_on_device(selected_song)
+        return render(request, 'playing_now.html')
