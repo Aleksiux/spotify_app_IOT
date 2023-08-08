@@ -103,7 +103,7 @@ class SaveSongs:
 # a.call_refresh()
 # a.play_song_on_device(track='spotify:track:5RX8T3EoTuXcybAxe6oPAw')
 # for i in a.search_track('Cha Cha Cha')['tracks']['items']:
-    # print(f"uri:{i['uri']}\nname:{i['name']}\nimage:{i['album']['images']}\n")
-    # for b in i['album']['images']:
-    #     if b['height'] == 300 and b['width'] == 300:
-    #         print(f"Image 300: {b['url']}")
+#     print(f"uri:{i['uri']}\nname:{i['name']}\nimage:{i['album']['images']}\nauthor:{i['author']}\n")
+#     for b in i['album']['images']:
+#         if b['height'] == 300 and b['width'] == 300:
+#             print(f"Image 300: {b['url']}")
