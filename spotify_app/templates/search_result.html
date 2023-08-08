@@ -4,9 +4,10 @@
 {% load static %}
 
 
-<table class="table" id="cvTable">
+<table class="center" id="spotifyTable">
     {% csrf_token %}
         <tr>
+            <th>Author</th>
             <th>Song name</th>
             <th>Image</th>
         </tr>
@@ -14,6 +15,15 @@
 
 
         <tr>
+            <td style="color:#FFFFFF">
+                {% for artist in result.artists %}
+                <form action="{% url 'play_selected_song' %}" method="post">
+                        {% csrf_token %}
+                    <input type="hidden" name="selected_song" value="{{result.uri}}">
+                        <input class="clear" type="submit" value="{{artist.name}}">
+                </form>
+                {% endfor %}
+            </td>
             <td style="color:#FFFFFF">
                 <form action="{% url 'play_selected_song' %}" method="post">
                         {% csrf_token %}
@@ -23,11 +33,16 @@
                 </form>
             </td>
             <td>
+                <form action="{% url 'play_selected_song' %}" method="post">
+                    {% csrf_token %}
                 {% for image in result.album.images %}
                     {% if image.height == 300 and image.width == 300 %}
-                        <img src="{{image.url}}">
+                <input type="image" src="{{image.url}}" alt="Submit" value="{{result.uri}}" />
+
+                    <input type="hidden" name="selected_song" value="{{result.uri}}">
                     {% endif %}
                 {%endfor%}
+                     </form>
             </td>
         </tr>
         {% endfor %}
