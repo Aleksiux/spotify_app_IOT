@@ -2,6 +2,19 @@
 
 {% block content %}
 {% load static %}
+    <form method="POST" action="{% url 'search' %}">
+<div class="row height d-flex justify-content-center">
+        {% csrf_token %}
+    <div class="col-md-4">
+                <div class="form">
+                  <i class="fa fa-search"></i>
+                  <input name="input_search" id="searchInput" type="text" class="form-control form-input" placeholder="Search anything...">
+                   <button type="submit" onclick="submitForm()" class="btn"><i class="fa fa-play"></i></button>
+                </div>
+              </div>
+
+            </div>
+            </form>
 
 
 <table class="center" id="spotifyTable">
@@ -10,12 +23,14 @@
             <th>Author</th>
             <th>Song name</th>
             <th>Image</th>
+            <th>Icon</th>
         </tr>
         {% for result in search_results %}
 
 
         <tr>
-            <td style="color:#FFFFFF">
+            {% csrf_token %}
+            <td>
                 {% for artist in result.artists %}
                 <form action="{% url 'play_selected_song' %}" method="post">
                         {% csrf_token %}
@@ -24,7 +39,7 @@
                 </form>
                 {% endfor %}
             </td>
-            <td style="color:#FFFFFF">
+            <td>
                 <form action="{% url 'play_selected_song' %}" method="post">
                         {% csrf_token %}
                 <input type="hidden" name="selected_song" value="{{result.uri}}">
@@ -44,8 +59,12 @@
                 {%endfor%}
                      </form>
             </td>
+            <td>
+                <button id="playing-button-id" name="selected_song"
+                        class="fa fa-play" data-value="{{ result.uri }}"></button>
+            </td>
         </tr>
         {% endfor %}
     </table>
-
+<script type="text/javascript" src="{% static 'scripts/play-pause-button.js' %}"></script>
 {%endblock%}
