@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+
     <form method="POST" action="{% url 'search' %}">
 <div class="row height d-flex justify-content-center">
         {% csrf_token %}
@@ -60,10 +61,11 @@
                      </form>
             </td>
             <td>
-                <button id="playing-button-id" name="selected_song"
-                        class="fa fa-play" data-value="{{ result.uri }}"></button>
+                <button id="playing-button-id-{{ forloop.counter }}" name="selected_song"
+                        class="playing-button fa fa-play" data-value="{{ result.uri }}"></button>
             </td>
         </tr>
+
         {% endfor %}
     </table>
 <script type="text/javascript" src="{% static 'scripts/play-pause-button.js' %}"></script>
