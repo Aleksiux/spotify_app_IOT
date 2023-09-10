@@ -37,7 +37,7 @@
 <body>
 <ul class="nav justify-content-center">
     <li class="nav-item">
-        <a class="nav-link active" href="">Something1</a>
+        <a class="nav-link active" href="{% url 'music_player' %}">Player</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="">Something2</a>
@@ -46,6 +46,19 @@
         <a class="nav-link" href="">Something3</a>
     </li>
 </ul>
+    <form method="POST" action="{% url 'search' %}">
+<div class="row height d-flex justify-content-center">
+        {% csrf_token %}
+    <div class="col-md-4">
+                <div class="form">
+                  <i class="fa fa-search"></i>
+                  <input name="input_search" id="searchInput" type="text" class="form-control form-input" placeholder="Search anything...">
+                   <button type="submit" onclick="submitForm()" class="btn"><i class="fa fa-play"></i></button>
+                </div>
+              </div>
+
+            </div>
+            </form>
 <div class="">{% block content %}{% endblock %}</div>
 </body>
 </html>
