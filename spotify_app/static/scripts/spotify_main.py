@@ -84,6 +84,17 @@ class SaveSongs:
         pause = requests.request("PUT", query, headers=headers, params=querystring)
         return pause
 
+    def play_track(self):
+        query = 'https://api.spotify.com/v1/me/player/play'
+        querystring = {"device_id": f"{device_id}"}
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(self.spotify_token)
+        }
+
+        pause = requests.request("PUT", query, headers=headers, params=querystring)
+        return pause
+
     def search_track(self, search_query):
         query = 'https://api.spotify.com/v1/search'
         querystring = {"q": search_query, "type": "track"}
@@ -98,6 +109,32 @@ class SaveSongs:
         refresh_caller = Refresh()
         self.spotify_token = refresh_caller.refresh()
 
+    def get_playback_state(self):
+        query = 'https://api.spotify.com/v1/me/player/currently-playing'
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(self.spotify_token)
+        }
+        playback_state = requests.request("GET", query, headers=headers)
+        return playback_state.json()
+
+    def skip_next(self):
+        query = 'https://api.spotify.com/v1/me/player/next'
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(self.spotify_token)
+        }
+        skip = requests.request("POST", query, headers=headers)
+        return skip
+
+    def prev_track(self):
+        query = 'https://api.spotify.com/v1/me/player/previous'
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(self.spotify_token)
+        }
+        prev = requests.request("POST", query, headers=headers)
+        return prev
 
 # a = SaveSongs()
 # a.call_refresh()

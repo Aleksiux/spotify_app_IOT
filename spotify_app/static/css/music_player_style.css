@@ -1,0 +1,114 @@
+
+body {
+  background-color: black;
+}
+
+.player {
+  color: white;
+  height: 65vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.track-art {
+  height: 300px;
+  width: 300px;
+  background-position: center;
+  border-radius: 15%;
+}
+
+.now-playing {
+  font-size: 1rem;
+}
+
+.track-name {
+  font-size: 3rem;
+}
+
+.track-artist {
+  font-size: 1.5rem;
+}
+
+/* Using flex with the row direction to
+   align items in a horizontal direction */
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.play-pause-track,
+.prev-track,
+.next-track {
+  padding: 25px;
+  opacity: 0.8;
+  transition: opacity .2s;
+}
+
+.play-pause-track:hover,
+.prev-track:hover,
+.next-track:hover {
+  opacity: 1.0;
+}
+
+.progress-bar {
+  width: 100%;
+  border-radius: 20px;
+  max-width: 400px;
+}
+
+.progress-bar{
+  height: 1em;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.progress-bar:hover,
+.volume_slider:hover {
+  opacity: 1.0;
+}
+
+.volume_slider {
+  color: white;
+  background: white;
+  width: 30%;
+}
+
+.current-time,
+.total-duration {
+  padding: 10px;
+}
+
+i.fa-volume-down,
+i.fa-volume-up {
+  padding: 10px;
+}
+
+i.fa-play-circle,
+i.fa-pause-circle,
+i.fa-step-forward,
+i.fa-step-backward {
+  cursor: pointer;
+}
+.progress-container {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 20px;
+  background-color: lightgray;
+}
+
+.current-time {
+    align-items: left;
+}
+.total-duration {
+    align-items: right;
+}

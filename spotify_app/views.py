@@ -1,9 +1,9 @@
 import json
+from time import sleep
 
 from django.shortcuts import render
 from .static.scripts import spotify_main
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -41,3 +41,67 @@ def play_selection(request):
         }
         return JsonResponse(context)
     return JsonResponse({'message': 'Invalid request method'})
+
+
+def music_player(request):
+    spotify = spotify_main.SaveSongs()
+    spotify.call_refresh()
+
+    if request.method == "POST":
+        action = request.POST.get('action')
+        if action == 'next_track':
+            spotify.skip_next()
+            sleep(0.3)
+            context = get_playback_context(spotify)
+            return render(request, 'music_player.html', context=context)
+        elif action == 'prev_track':
+            spotify.prev_track()
+            sleep(0.3)
+            context = get_playback_context(spotify)
+            return render(request, 'music_player.html', context=context)
+        elif action == 'pause_track':
+            spotify.pause_song_on_device()
+            context = get_playback_context(spotify)
+            return render(request, 'music_player.html', context=context)
+        elif action == 'play_track':
+            spotify.play_track()
+            context = get_playback_context(spotify)
+            return render(request, 'music_player.html', context=context)
+    context = get_playback_context(spotify)
+    return render(request, 'music_player.html', context=context)
+
+
+def listenToSpotifyAPI(request):
+    spotify = spotify_main.SaveSongs()
+    spotify.call_refresh()
+    context = get_playback_context(spotify)
+    return JsonResponse(data=context)
+
+
+def milliseconds_to_minutes(milliseconds):
+    minutes = (milliseconds / 1000) / 60
+    seconds = (milliseconds / 1000) % 60
+    duration = f"{format(int(minutes), '02')}:{format(int(seconds), '02')}"
+    return duration
+
+
+def get_playback_context(spotify):
+    playback_state = spotify.get_playback_state()
+    progress = playback_state['progress_ms']
+    milliseconds = playback_state['item']['duration_ms']
+    duration = milliseconds_to_minutes(milliseconds)
+    progress_duration = milliseconds_to_minutes(progress)
+    is_currently_playing = playback_state['is_playing']
+    percentage_for_progress_bar = (progress * 100) / milliseconds
+    return {
+        'track_name': playback_state['item']['name'],
+        'artist_name': playback_state['item']['artists'][0]['name'],
+        'images': playback_state['item']['album']['images'],
+        'duration': duration,
+        'milliseconds': milliseconds,
+        'progress': progress,
+        'progress_duration': progress_duration,
+        'playback_state': playback_state,
+        'is_currently_playing': is_currently_playing,
+        'percentage': percentage_for_progress_bar,
+    }
