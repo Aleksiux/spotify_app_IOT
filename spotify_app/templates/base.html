@@ -40,7 +40,7 @@
         <a class="nav-link active" href="{% url 'music_player' %}">Player</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="">Something2</a>
+        <a class="nav-link" href="{% url 'choose_available_device' %}">Choose available device</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="">Something3</a>
@@ -53,7 +53,7 @@
                 <div class="form">
                   <i class="fa fa-search"></i>
                   <input name="input_search" id="searchInput" type="text" class="form-control form-input" placeholder="Search anything...">
-                   <button type="submit" onclick="submitForm()" class="btn"><i class="fa fa-play"></i></button>
+                   <button type="submit" onclick="submitForm()" class="btn"></button>
                 </div>
               </div>
 

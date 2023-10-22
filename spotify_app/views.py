@@ -1,6 +1,7 @@
 import json
 from time import sleep
 
+import requests
 from django.shortcuts import render
 from .static.scripts import spotify_main
 from django.http import JsonResponse
@@ -28,7 +29,7 @@ def play_selected_song(request):
         spotify = spotify_main.SaveSongs()
         spotify.call_refresh()
         spotify.play_song_on_device(selected_song)
-        return render(request, 'playing_now.html')
+        return render(request, 'music_player.html')
 
 
 def play_selection(request):
@@ -46,9 +47,10 @@ def play_selection(request):
 def music_player(request):
     spotify = spotify_main.SaveSongs()
     spotify.call_refresh()
-
     if request.method == "POST":
         action = request.POST.get('action')
+        spotify = spotify_main.SaveSongs()
+        spotify.call_refresh()
         if action == 'next_track':
             spotify.skip_next()
             sleep(0.3)
@@ -67,8 +69,38 @@ def music_player(request):
             spotify.play_track()
             context = get_playback_context(spotify)
             return render(request, 'music_player.html', context=context)
-    context = get_playback_context(spotify)
+    try:
+        context = get_playback_context(spotify)
+    except TypeError:
+        context = {}
+
     return render(request, 'music_player.html', context=context)
+
+
+def choose_available_device(request):
+    spotify = spotify_main.SaveSongs()
+    current_device = spotify.device_id
+    spotify.call_refresh()
+    if request.method == 'POST':
+        spotify = spotify_main.SaveSongs()
+        spotify.call_refresh()
+        selected_device = request.POST.get('selected_device')
+        with open(
+                r'C:\Users\Aleksas\PycharmProjects\spotify_api\spotify_app_IOT\spotify_app\static\scripts\devices.txt',
+                'w') as f:
+            f.write(selected_device)
+        available_devices = spotify.get_available_devices()
+        context = {
+            'available_devices': available_devices,
+            'current_device': current_device,
+        }
+        return render(request, 'choose_available_device.html', context=context)
+    available_devices = spotify.get_available_devices()
+    context = {
+        'available_devices': available_devices,
+        'current_device': current_device,
+    }
+    return render(request, 'choose_available_device.html', context=context)
 
 
 def listenToSpotifyAPI(request):
@@ -105,3 +137,17 @@ def get_playback_context(spotify):
         'is_currently_playing': is_currently_playing,
         'percentage': percentage_for_progress_bar,
     }
+
+
+def change_volume(request):
+    if request.method == "POST":
+        data = request.body.decode('utf-8')
+        json_data = json.loads(data)
+        volume = json_data.get('volume_data')
+        spotify = spotify_main.SaveSongs()
+        spotify.call_refresh()
+        spotify.set_playback_volume(volume)
+        data = {'message': 'Volume changed successfully'}
+        return JsonResponse(data)
+
+

@@ -74,3 +74,10 @@ tr,th,td {
 .fa.fa-pause {
     background: black;
 }
+
+select {
+    color: black !important;
+}
+#submitOption {
+    color: black;
+}

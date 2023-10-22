@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+
+
+<form action="{% url 'choose_available_device' %}" style="text-align:center; color:white;" method="post">
+          {% csrf_token %}
+      <p>At the moment chosen device is:{{ current_device }}</p>
+      <label for="device">Choose a device:</label>
+      <select name="device" id="device">
+          <option value="" disabled selected>Select a Device</option>
+{% for device in available_devices %}
+    <option name="selected_option" value="{{device.id}}">{{device.name}} | {{device.type}} | {{device.id}}</option>
+              {% endfor %}
+          </select>
+ <input id="selected_device" name="selected_device" type="hidden" value="">
+    <input type="submit" value="Submit">
+</form>
+
+
+<script type="text/javascript" src="{% static 'scripts/choose_device.js' %}"></script>
+
+{% endblock %}
+
