@@ -1,22 +1,28 @@
 import requests
-from dotenv import dotenv_values
+from dotenv import dotenv_values, load_dotenv
 from .refresh import Refresh
 
 config = dotenv_values(".env")
 redirect_uri = config['redirect_uri']
 user_id = config['username']
 discover_weekly_id = config['discover_weekly_id']
-device_id = config['device_id']
+
+
+# device_id = config['device_id']
 
 
 class SaveSongs:
     def __init__(self):
+        with open(
+                r'C:\Users\Aleksas\PycharmProjects\spotify_api\spotify_app_IOT\spotify_app\static\scripts\devices.txt',
+                'r') as f:
+            device = f.read()
         self.user_id = user_id
         self.spotify_token = ''
         self.discover_weekly_id = discover_weekly_id
         self.tracks = []
         self.available_devices = []
-        self.device_id = device_id
+        self.device_id = device
 
     # Loop through playlist tracks, add them to list
     def find_songs(self):
@@ -59,7 +65,7 @@ class SaveSongs:
 
     def play_song_on_device(self, track=''):
         query = 'https://api.spotify.com/v1/me/player/play'
-        querystring = {"device_id": f"{device_id}"}
+        querystring = {"device_id": f"{self.device_id}"}
 
         payload = {
             "uris": [f"{track}"],
@@ -75,7 +81,7 @@ class SaveSongs:
 
     def pause_song_on_device(self):
         query = 'https://api.spotify.com/v1/me/player/pause'
-        querystring = {"device_id": f"{device_id}"}
+        querystring = {"device_id": f"{self.device_id}"}
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(self.spotify_token)
@@ -86,7 +92,7 @@ class SaveSongs:
 
     def play_track(self):
         query = 'https://api.spotify.com/v1/me/player/play'
-        querystring = {"device_id": f"{device_id}"}
+        querystring = {"device_id": f"{self.device_id}"}
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(self.spotify_token)
@@ -136,11 +142,12 @@ class SaveSongs:
         prev = requests.request("POST", query, headers=headers)
         return prev
 
-# a = SaveSongs()
-# a.call_refresh()
-# a.play_song_on_device(track='spotify:track:5RX8T3EoTuXcybAxe6oPAw')
-# for i in a.search_track('Cha Cha Cha')['tracks']['items']:
-#     print(f"uri:{i['uri']}\nname:{i['name']}\nimage:{i['album']['images']}\nauthor:{i['author']}\n")
-#     for b in i['album']['images']:
-#         if b['height'] == 300 and b['width'] == 300:
-#             print(f"Image 300: {b['url']}")
+    def set_playback_volume(self, volume):
+        query = 'https://api.spotify.com/v1/me/player/volume'
+        querystring = {"volume_percent": volume}
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(self.spotify_token)
+        }
+        volume_data = requests.request("PUT", query, headers=headers, params=querystring)
+        return volume_data

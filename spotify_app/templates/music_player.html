@@ -12,9 +12,9 @@
         <div class="track-artist">{{ artist_name }}</div>
     </div>
     <div class="buttons">
-                <form id="prev-form" action="{% url 'music_player' %}" method="post">
+        <form id="prev-form" action="{% url 'music_player' %}" method="post">
             {% csrf_token %}
-                    <input type="hidden" name="action" value="">
+            <input type="hidden" name="action" value="">
         </form>
         <div class="prev-track" onclick="prevTrack()">
             <i class="fa fa-step-backward fa-2x"></i>
@@ -22,11 +22,11 @@
         <form id="play-pause-form" action="{% url 'music_player' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="action" value="">
-            </form>
+        </form>
         <div id="PlayPauseButton" class="play-pause-track">
             <i class="fa fa-pause fa-5x" id="pause" onclick="pauseTrack()"></i>
             <i class="fa fa-play-circle fa-5x" id="play" onclick="playTrack()"></i>
-            </div>
+        </div>
         <form id="skip-form" action="{% url 'music_player' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="action" value="">
@@ -43,11 +43,14 @@
     <div class="total-duration">{{ duration }}</div>
     <div hidden class="duration-mili">{{ milliseconds }}</div>
     <div class="slider_container">
-        <i class="fa fa-volume-down"></i>
-        <input type="range" min="1" max="100"
-               value="99" class="volume_slider" onchange="setVolume()">
-        <i class="fa fa-volume-up"></i>
+        <form id="volume_slider" action="{% url 'change_volume' %}" method="post">
+            {% csrf_token %}
+            <i class="fa fa-volume-down"></i>
+            <input id="volume" name="volume" type="range" min="1" max="100" value="99" class="volume_slider">
+            <i class="fa fa-volume-up"></i>
+        </form>
     </div>
 </div>
+
 <script type="text/javascript" src="{% static 'scripts/music_player.js' %}"></script>
 {% endblock %}

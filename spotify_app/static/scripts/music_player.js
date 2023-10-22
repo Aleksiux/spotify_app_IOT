@@ -6,11 +6,15 @@ const currentTimeDisplay = document.querySelector('.current-time');
 document.getElementById("play").hidden = true;
 document.getElementById("pause").hidden = false;
 
+
+
+
 let isPlaying = false;
 let startTime;
 let pausedTime = parseInt(currentTimeDisplay.getAttribute('data-duration'));
 let interval;
 const duration = parseInt(progressBar.getAttribute('data-duration'));
+
 
 function listenToSpotifyAPI() {
   fetch('listen_to_spotify_api')
@@ -89,7 +93,44 @@ function updatePlayerData(data) {
   document.getElementById("play").hidden = false;
   document.getElementById("pause").hidden = true;
   }
-
-
 }
 
+function changeVolume(volume_data) {
+    console.log('Volume Data:', volume_data);
+    fetch('change_volume', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ volume_data: volume_data }),
+    })
+      .then(response => response.json())
+      .then(data => {
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+const volume = document.querySelector('#volume');
+volume.addEventListener('change', function(){
+    console.log(volume.value);
+    changeVolume(volume.value);
+})
+
+
+
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
